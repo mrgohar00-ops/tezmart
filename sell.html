@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sell Product</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<main class="content">
+<section class="form-section">
+<h2>Sell Product</h2>
+<form>
+<label>Product Name:</label>
+<input required="" type="text"/><br/><br/>
+<label>Price:</label>
+<input required="" type="number"/><br/><br/>
+<label>Description:</label>
+<textarea required=""></textarea><br/><br/>
+<label>Upload Image:</label>
+<input accept="image/*" type="file"/><br/><br/>
+<button type="submit">Sell</button>
+</form>
+</section>
+</main></body>
+</html>
+<main class="container">
+<h2 class="section-title">Sell a Product</h2>
+<form class="sell-form" id="sellForm">
+<label>Product Name: <input id="productName" required="" type="text"/></label><br/><br/>
+<label>Price: <input id="productPrice" required="" type="number"/></label><br/><br/>
+<label>Description: <textarea id="productDescription" required=""></textarea></label><br/><br/>
+<label>Image: <input accept="image/*" id="productImage" required="" type="file"/></label><br/><br/>
+<button type="submit">Add Product</button>
+</form>
+</main>
+<script>
+document.getElementById("sellForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name = document.getElementById("productName").value;
+    const price = document.getElementById("productPrice").value;
+    const description = document.getElementById("productDescription").value;
+    const imageInput = document.getElementById("productImage");
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+        const image = event.target.result;
+        let products = JSON.parse(localStorage.getItem("products")) || [];
+        products.push({ name, price, description, image });
+        localStorage.setItem("products", JSON.stringify(products));
+        alert("Product added successfully! Check Buy section.");
+        document.getElementById("sellForm").reset();
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+});
+</script>

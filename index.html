@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>TEZMART — Buy &amp; Sell Online</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="site-header">
+<div class="container header-inner">
+<div class="brand">
+<span class="brand-name">TEZMART</span>
+</div>
+<div class="search">
+<input aria-label="Search" placeholder="Search products, brands and more" type="search"/>
+<button class="search-btn">Search</button>
+</div>
+<nav class="nav-actions">
+<a class="btn-link" href="login.html">Login</a>
+<a class="btn-primary" href="signup.html">Sign up</a>
+<a aria-label="Cart" class="cart" href="#">Cart<span class="cart-count">0</span></a>
+</nav>
+</div>
+</header>
+<main>
+<!-- Hero / Welcome -->
+<section class="hero" style="padding:60px 20px;">
+<div style="display:flex; align-items:center; justify-content:space-between; gap:20px;">
+<div style="flex:1;">
+<div class="container hero-inner">
+<div class="hero-text">
+<p class="welcome-line">Welcome to TEZMART — your trusted marketplace for buying, selling &amp; affiliate marketing.</p>
+<h1>Welcome to TEZMART</h1>
+<p>Buy, sell and earn with affiliate marketing — trusted, fast and easy.</p>
+<div class="hero-ctas">
+<a class="btn-primary" href="buy.html">Shop Now</a>
+<a class="btn-outline" href="sell.html">Start Selling</a>
+</div>
+</div>
+<div aria-hidden="true" class="hero-image">
+<p class="owner-name">Muhammad Gohar Mehboob</p></div>
+</div>
+</div>
+<div class="owner-section">
+<img alt="Owner" class="owner-img" src="owner.png"/>
+<div style="text-align:center; margin-top:8px;">
+<p>Phone: 03084545463</p>
+<p>Email: mrgohar00@gmail.com</p>
+</div>
+<p class="owner-label">Owner</p>
+</div>
+</div>
+</section>
+<!-- Main Features / Categories -->
+<section class="main-features container" id="main-features">
+<h2 class="section-title">Main Services</h2>
+<div class="features-grid">
+<a class="feature-card" href="buy.html" target="_blank">
+<div class="feature-icon">🛒</div>
+<h3>Buy</h3>
+<p>Shop products from verified sellers with secure checkout.</p>
+</a>
+<a class="feature-card" href="sell.html">
+<div class="feature-icon">🏷️</div>
+<h3>Sell</h3>
+<p>List your items easily and reach thousands of buyers.</p>
+</a>
+<a class="feature-card" href="affiliate.html" target="_blank">
+<div class="feature-icon">🤝</div>
+<h3>Affiliate Marketing</h3><p>Promote products and earn competitive commissions.</p></a><a class="feature-card" href="orders.html"><div class="feature-icon">🛒</div><h3>My Orders</h3><p>Track your order history anytime.</p></a></div>
+
+</section>
+<!-- Others -->
+<section class="others container" id="others">
+<h2 class="section-title">Why TEZMART?</h2>
+<ul class="benefits">
+<li>Secure payments and buyer protection</li>
+<li>24/7 customer support</li>
+<li>Easy returns and seller tools</li>
+</ul>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="footer-columns">
+<div>
+<h4>TEZMART</h4>
+<p>Your trusted marketplace.</p>
+</div>
+<div>
+<h5>Company</h5>
+<ul><li><a href="#">About</a></li><li><a href="#">Careers</a></li></ul>
+</div>
+<div>
+<h5>Help</h5>
+<ul><li><a href="#">Support</a></li><li><a href="#">FAQs</a></li></ul>
+</div>
+</div>
+<div class="copyright">© TEZMART — All rights reserved.</div>
+</div>
+</footer>
+<script>
+// Simple client-side product demo for Featured Products.
+// In a real app these come from a backend API.
+const featuredProducts = [
+  {id:1,name:"Wireless Headphones",price:"$45",img:"owner.png"},
+  {id:2,name:"Smart Watch",price:"$59",img:"owner.png"},
+  {id:3,name:"Portable Speaker",price:"$29",img:"owner.png"},
+  {id:4,name:"Phone Case",price:"$9",img:"owner.png"}
+];
+
+function renderProducts(list, containerId) {
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  if(list.length === 0) {
+    container.innerHTML = '<p class="empty-message">No products available.</p>';
+    return;
+  }
+  container.innerHTML = '';
+  list.forEach(p => {
+    const card = document.createElement('a');
+    card.className = 'product-card';
+    card.href = 'buy.html';
+    card.innerHTML = `<div class="product-media"><img src="${p.img}" alt="${p.name}"></div>
+                      <div class="product-body"><h4>${p.name}</h4><div class="price">${p.price}</div></div>`;
+    container.appendChild(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderProducts(featuredProducts, 'featured-grid');
+});
+</script>
+
+<!-- Footer -->
+<footer>
+  <p>
+    <a href="#" id="footerPhone">Phone</a> | 
+    <a href="#" id="footerEmail">Email</a> | 
+    <a href="#" id="footerAbout">About</a>
+  </p>
+</footer>
+
+<!-- Phone/Email Modal -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Contact Info</h2>
+    <p><strong>Phone / WhatsApp:</strong> 03084545463</p>
+    <p><strong>Email:</strong> mrgohar00@gmail.com</p>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>About This App</h2>
+    <p>
+      This app is built for online shopping.<br>
+      You can buy anything from here. All sellers are trusted and verified.<br>
+      If you have any problem report the issue against the given number and email.<br><br>
+      Thanks & Regards,<br>
+      <b>Muhammad Gohar Mehboob (OWNER)</b>
+    </p>
+  </div>
+</div>
+
+<script src="script.js" defer></script>
+
+<!-- Payment Proof Protection -->
+<style>
+.payment-field { margin-bottom: 10px; }
+.watermark-canvas { max-width:100%; display:none; margin-top:10px; border:1px solid #ccc; }
+</style>
+<script>
+function setupPaymentProtection() {
+  document.querySelectorAll("form").forEach(form => {
+    if(!form.querySelector('input[type=file]')) return;
+
+    // Insert Name + Phone fields
+    if(!form.querySelector('[name=customer_name]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Name:<br><input type="text" name="customer_name" required></label></div>');
+    }
+    if(!form.querySelector('[name=customer_phone]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Phone:<br><input type="tel" name="customer_phone" required></label></div>');
+    }
+
+    // Add payment method select if not exists
+    if(!form.querySelector('[name=payment_method]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Payment Method:<br><select name="payment_method" required><option value="">Select</option><option value="easypaisa">EasyPaisa</option><option value="jazzcash">JazzCash</option><option value="binance">Binance</option></select></label></div>');
+    }
+
+    // Add TXN id field hidden
+    if(!form.querySelector('[name=transaction_id]')) {
+      form.insertAdjacentHTML("beforeend", '<div class="payment-field txn-field" style="display:none;"><label>Transaction ID:<br><input type="text" name="transaction_id"></label></div>');
+    }
+
+    // Add canvas preview for watermark
+    let fileInput = form.querySelector('input[type=file]');
+    if(fileInput && !form.querySelector('.watermark-canvas')) {
+      fileInput.insertAdjacentHTML("afterend", '<canvas class="watermark-canvas"></canvas>');
+    }
+
+    // Payment method change -> show/hide TXN field
+    let methodSel = form.querySelector('[name=payment_method]');
+    methodSel.addEventListener("change", e => {
+      let val = e.target.value.toLowerCase();
+      let txnField = form.querySelector(".txn-field");
+      if(val === "easypaisa" || val === "jazzcash") {
+        txnField.style.display = "block";
+        txnField.querySelector("input").required = true;
+      } else {
+        txnField.style.display = "none";
+        txnField.querySelector("input").required = false;
+        txnField.querySelector("input").value = "";
+      }
+      if(val === "binance") {
+        fileInput.labels[0].innerText = "Upload Screenshot of Binance Payment Email:";
+      }
+    });
+
+    // Handle file upload -> add watermark
+    fileInput.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const name = form.querySelector('[name=customer_name]').value;
+      const phone = form.querySelector('[name=customer_phone]').value;
+      const method = form.querySelector('[name=payment_method]').value.toLowerCase();
+      const txn = form.querySelector('[name=transaction_id]').value;
+      if(!name || !phone) { alert("Enter name and phone first"); e.target.value=""; return; }
+      if((method==="easypaisa"||method==="jazzcash") && !txn) { alert("Transaction ID required"); e.target.value=""; return; }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = form.querySelector(".watermark-canvas");
+          const ctx = canvas.getContext("2d");
+          let w = img.width, h = img.height;
+          const maxW = 900;
+          if(w>maxW) { h = h*maxW/w; w = maxW; }
+          canvas.width=w; canvas.height=h;
+          ctx.drawImage(img,0,0,w,h);
+          ctx.fillStyle="rgba(255,255,255,0.6)";
+          ctx.fillRect(10,h-60,w-20,50);
+          ctx.fillStyle="black";
+          ctx.font="14px Arial";
+          let wm = "Name: "+name+" | Phone: "+phone;
+          if(txn) wm+=" | TXN: "+txn;
+          ctx.fillText(wm,20,h-35);
+          ctx.font="12px Arial";
+          ctx.fillText("Uploaded: "+new Date().toLocaleString(),20,h-15);
+          canvas.style.display="block";
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded", setupPaymentProtection);
+</script>
+
+
+<!-- Rate & Reviews Service Box -->
+<div class="service-box">
+  <h3>⭐ Rate & Reviews</h3>
+  <div class="review-form">
+    <label>Name:<br><input type="text" id="reviewerName" required></label><br><br>
+    <label>Rating:<br>
+      <span class="star-rating">
+        <i data-star="1">★</i><i data-star="2">★</i><i data-star="3">★</i><i data-star="4">★</i><i data-star="5">★</i>
+      </span>
+    </label><br><br>
+    <label>Comment:<br><textarea id="reviewComment" required></textarea></label><br><br>
+    <button type="button" onclick="submitReview()">Submit Review</button>
+  </div>
+  <div id="reviewsList" class="reviews-list"></div>
+</div>
+
+
+<style>
+.service-box { border:1px solid #ddd; padding:15px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin:10px; }
+.star-rating i { font-size:24px; cursor:pointer; color:#ccc; }
+.star-rating i.selected, .star-rating i:hover, .star-rating i:hover ~ i { color:gold; }
+.reviews-list { margin-top:20px; }
+.review-item { border-top:1px solid #eee; padding:10px 0; }
+.review-item strong { display:block; }
+.review-item button { background:red; color:#fff; border:none; padding:5px 10px; cursor:pointer; border-radius:4px; }
+</style>
+
+<script>
+let selectedRating = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".star-rating i").forEach(star => {
+    star.addEventListener("click", () => {
+      selectedRating = star.dataset.star;
+      document.querySelectorAll(".star-rating i").forEach(s => s.classList.remove("selected"));
+      for(let i=0;i<selectedRating;i++){
+        document.querySelectorAll(".star-rating i")[i].classList.add("selected");
+      }
+    });
+  });
+  loadReviews();
+});
+
+function submitReview(){
+  const name = document.getElementById("reviewerName").value.trim() || "Anonymous";
+  const comment = document.getElementById("reviewComment").value.trim();
+  if(selectedRating === 0 || !comment){ alert("Please add rating and comment."); return; }
+  const review = {
+    name: name,
+    rating: selectedRating,
+    comment: comment,
+    date: new Date().toLocaleString()
+  };
+  let reviews = JSON.parse(localStorage.getItem("reviews")||"[]");
+  reviews.push(review);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  document.getElementById("reviewerName").value="";
+  document.getElementById("reviewComment").value="";
+  selectedRating = 0;
+  document.querySelectorAll(".star-rating i").forEach(s=>s.classList.remove("selected"));
+  loadReviews();
+}
+
+function loadReviews(){
+  let reviews = JSON.parse(localStorage.getItem("reviews")||"[]");
+  const container = document.getElementById("reviewsList");
+  container.innerHTML="";
+  reviews.forEach((r, idx)=>{
+    let stars = "★".repeat(r.rating) + "☆".repeat(5-r.rating);
+    container.innerHTML += `<div class='review-item'><strong>${r.name}</strong>
+      <div>${stars}</div>
+      <div>${r.comment}</div>
+      <small>${r.date}</small><br>
+      <button onclick="deleteReview(${idx})">Delete</button>
+    </div>`;
+  });
+}
+
+function deleteReview(index){
+  let reviews = JSON.parse(localStorage.getItem("reviews")||"[]");
+  reviews.splice(index,1);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+  loadReviews();
+}
+</script>
+
+</body>
+</html>

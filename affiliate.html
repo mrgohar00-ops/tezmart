@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Affiliate — TEZMART</title>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<div class="brand"><span class="brand-name">TEZMART</span></div>
+<nav class="nav-actions"><a class="btn-link" href="index.html">Home</a></nav>
+</div></header>
+<main class="container">
+<h1 class="section-title">Affiliate Products</h1>
+<div class="product-grid" id="affiliate-list"></div>
+</main>
+<script>
+const products = []; // Replace with affiliate product data
+
+function render(list){
+  const container = document.getElementById('affiliate-list');
+  if(list.length===0){
+    container.innerHTML = '<p class="empty-message">No products added yet.</p>';
+    return;
+  }
+  container.innerHTML='';
+  list.forEach(p=>{
+    const a = document.createElement('a');
+    a.className='product-card';
+    a.href='affiliate.html';
+    a.innerHTML = '<div class="product-media"></div><div class="product-body"><h4>'+p.name+'</h4><div class="price">'+p.price+'</div></div>';
+    container.appendChild(a);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', ()=> render(products));
+</script>
+</body>
+</html>

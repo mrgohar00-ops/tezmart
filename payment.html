@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Payment — TEZMART</title>
+<link href="style.css" rel="stylesheet"/>
+<style>
+    .payment-box{max-width:420px;margin:30px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.08);text-align:left}
+    .payment-box h3{margin-top:0}
+    .payment-info{background:#f7f7f9;padding:12px;border-radius:8px;margin:10px 0}
+    .screenshot-input{margin-top:12px}
+    .proof-preview{max-width:100%;border-radius:8px;margin-top:10px}
+    .confirm-btn{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer}
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+<div class="payment-box">
+<h3 id="title">Complete Payment</h3>
+<div class="payment-info">
+<div><strong>Receiver:</strong> <span id="receiver-name">Muhammad Mehboob Arif</span></div>
+<div><strong>Number:</strong> <span id="receiver-number">03009815598</span></div>
+<div class="note">Send the payment to the number above using the selected method. Then upload a screenshot as proof.</div>
+</div>
+<label for="payerName">Your Name (payer):</label>
+<input id="payerName" placeholder="Your full name" style="width:100%;padding:8px;margin-top:6px;border-radius:6px;border:1px solid #ddd" type="text"/>
+<div class="screenshot-input">
+<label for="screenshot">Upload Payment Screenshot (required):</label><br/>
+<input accept="image/*" id="screenshot" type="file"/>
+<img alt="" class="proof-preview" id="preview" src="" style="display:none"/>
+</div>
+<button class="confirm-btn" id="confirmBtn">Submit Proof</button>
+<div id="message" style="margin-top:12px"></div>
+</div>
+<script>
+// Parse method from query
+function qs(q) { const p = new URLSearchParams(location.search); return p.get(q); }
+const method = qs('method') || 'easypaisa';
+document.getElementById('title').innerText = 'Pay with ' + (method==='easypaisa' ? 'EasyPaisa' : 'JazzCash');
+// Fixed receiver info (as requested)
+document.getElementById('receiver-name').innerText = 'Muhammad Mehboob Arif';
+document.getElementById('receiver-number').innerText = '03009815598';
+
+const screenshotInput = document.getElementById('screenshot');
+const preview = document.getElementById('preview');
+screenshotInput.addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){ preview.src = ev.target.result; preview.style.display='block'; }
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('confirmBtn').addEventListener('click', function(){
+  const payer = document.getElementById('payerName').value.trim();
+  const file = screenshotInput.files[0];
+  const msg = document.getElementById('message');
+  msg.style.color = 'var(--muted)'; msg.innerText = '';
+  if(!payer){ msg.style.color='red'; msg.innerText='Please enter your name.'; return; }
+  if(!file){ msg.style.color='red'; msg.innerText='Please upload the payment screenshot as proof.'; return; }
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const proof = ev.target.result;
+    // Save payment record to localStorage (so admin can review later)
+    let payments = JSON.parse(localStorage.getItem('payments') || '[]');
+    payments.push({ method: method, receiverName: 'Muhammad Mehboob Arif', receiverNumber: '03009815598', payerName: payer, proof: proof, timestamp: new Date().toISOString() });
+    localStorage.setItem('payments', JSON.stringify(payments));
+    msg.style.color='green';
+    msg.innerText='Payment proof submitted — thank you! You can close this window.';
+    // Optionally disable inputs
+    document.getElementById('confirmBtn').disabled = true;
+  };
+  reader.readAsDataURL(file);
+});
+</script>
+
+<!-- Payment Proof Protection -->
+<style>
+.payment-field { margin-bottom: 10px; }
+.watermark-canvas { max-width:100%; display:none; margin-top:10px; border:1px solid #ccc; }
+</style>
+<script>
+function setupPaymentProtection() {
+  document.querySelectorAll("form").forEach(form => {
+    if(!form.querySelector('input[type=file]')) return;
+
+    // Insert Name + Phone fields
+    if(!form.querySelector('[name=customer_name]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Name:<br><input type="text" name="customer_name" required></label></div>');
+    }
+    if(!form.querySelector('[name=customer_phone]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Phone:<br><input type="tel" name="customer_phone" required></label></div>');
+    }
+
+    // Add payment method select if not exists
+    if(!form.querySelector('[name=payment_method]')) {
+      form.insertAdjacentHTML("afterbegin", '<div class="payment-field"><label>Payment Method:<br><select name="payment_method" required><option value="">Select</option><option value="easypaisa">EasyPaisa</option><option value="jazzcash">JazzCash</option><option value="binance">Binance</option></select></label></div>');
+    }
+
+    // Add TXN id field hidden
+    if(!form.querySelector('[name=transaction_id]')) {
+      form.insertAdjacentHTML("beforeend", '<div class="payment-field txn-field" style="display:none;"><label>Transaction ID:<br><input type="text" name="transaction_id"></label></div>');
+    }
+
+    // Add canvas preview for watermark
+    let fileInput = form.querySelector('input[type=file]');
+    if(fileInput && !form.querySelector('.watermark-canvas')) {
+      fileInput.insertAdjacentHTML("afterend", '<canvas class="watermark-canvas"></canvas>');
+    }
+
+    // Payment method change -> show/hide TXN field
+    let methodSel = form.querySelector('[name=payment_method]');
+    methodSel.addEventListener("change", e => {
+      let val = e.target.value.toLowerCase();
+      let txnField = form.querySelector(".txn-field");
+      if(val === "easypaisa" || val === "jazzcash") {
+        txnField.style.display = "block";
+        txnField.querySelector("input").required = true;
+      } else {
+        txnField.style.display = "none";
+        txnField.querySelector("input").required = false;
+        txnField.querySelector("input").value = "";
+      }
+      if(val === "binance") {
+        fileInput.labels[0].innerText = "Upload Screenshot of Binance Payment Email:";
+      }
+    });
+
+    // Handle file upload -> add watermark
+    fileInput.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const name = form.querySelector('[name=customer_name]').value;
+      const phone = form.querySelector('[name=customer_phone]').value;
+      const method = form.querySelector('[name=payment_method]').value.toLowerCase();
+      const txn = form.querySelector('[name=transaction_id]').value;
+      if(!name || !phone) { alert("Enter name and phone first"); e.target.value=""; return; }
+      if((method==="easypaisa"||method==="jazzcash") && !txn) { alert("Transaction ID required"); e.target.value=""; return; }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = form.querySelector(".watermark-canvas");
+          const ctx = canvas.getContext("2d");
+          let w = img.width, h = img.height;
+          const maxW = 900;
+          if(w>maxW) { h = h*maxW/w; w = maxW; }
+          canvas.width=w; canvas.height=h;
+          ctx.drawImage(img,0,0,w,h);
+          ctx.fillStyle="rgba(255,255,255,0.6)";
+          ctx.fillRect(10,h-60,w-20,50);
+          ctx.fillStyle="black";
+          ctx.font="14px Arial";
+          let wm = "Name: "+name+" | Phone: "+phone;
+          if(txn) wm+=" | TXN: "+txn;
+          ctx.fillText(wm,20,h-35);
+          ctx.font="12px Arial";
+          ctx.fillText("Uploaded: "+new Date().toLocaleString(),20,h-15);
+          canvas.style.display="block";
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+document.addEventListener("DOMContentLoaded", setupPaymentProtection);
+</script>
+
+</body>
+</html>
